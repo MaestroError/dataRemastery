@@ -39,10 +39,10 @@ foreach ($exData as $onePost) {
     $data[] = $obj->result;
 }
 
-// $json = json_encode($data, JSON_UNESCAPED_UNICODE );
-// file_put_contents("data.json", $json);
+$json = json_encode($data, JSON_UNESCAPED_UNICODE );
+file_put_contents("data.json", $json);
 
-// print_r($data);
+print_r($data);
 
 
 
