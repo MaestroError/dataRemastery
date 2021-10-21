@@ -2,8 +2,9 @@
 
 /* Example of usage */
 
-// Data class extended from dataRemastery
 require "src/dataRemastery.php";
+
+// Data class extended from dataRemastery
 require "data.php";
 
 $exData = include_once("exampleData.php");
