@@ -3,6 +3,7 @@
 /* Example of usage */
 
 // Data class extended from dataRemastery
+require "src/dataRemastery.php";
 require "data.php";
 
 $exData = include_once("exampleData.php");
