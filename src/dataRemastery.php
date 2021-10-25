@@ -3,6 +3,8 @@ namespace maestroerror;
 
 class dataRemastery {
 
+    public static $VERSION = "0.2.0";
+
     /* Unconfirmed */
     public $reciver;
     // If you use reciveBySource you need to specify source - first argument of reciver
