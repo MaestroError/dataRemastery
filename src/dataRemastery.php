@@ -56,9 +56,17 @@ class dataRemastery {
 
     // binds last or specified resolved value
     // $dataFieldName key or index
-    public function bindR(string $propertyName, string|int $dataFieldName, string|bool $collectionName = false) {
+    public function bindR(string $propertyName, string|int $dataFieldName, string|bool $collectionName = false, $defaultValue = null) {
         $collectionName = $this->checkCollection($collectionName);
-        $this->binder[$propertyName] = $this->resolver[$collectionName][$dataFieldName];
+
+        if(isset($this->resolver[$collectionName][$dataFieldName])) {
+            $this->binder[$propertyName] = $this->resolver[$collectionName][$dataFieldName];
+        } else {
+            if($defaultValue) {
+                $this->binder[$propertyName] = $defaultValue;
+            }
+        }
+        
         $this->set($this->binder);
         return $this;
     }
