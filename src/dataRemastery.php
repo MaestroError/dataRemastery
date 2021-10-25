@@ -3,7 +3,7 @@ namespace maestroerror;
 
 class dataRemastery {
 
-    public static $VERSION = "0.2.0";
+    public static $VERSION = "0.2.1";
 
     /* Unconfirmed */
     public $reciver;
