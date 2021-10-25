@@ -70,6 +70,13 @@ class dataRemastery {
         return $this;
     }
 
+    // sets the value
+    public function setValue(string $propertyName, string|int $value) {
+        $this->binder[$propertyName] = $value;
+        $this->set($this->binder);
+        return $this;
+    }
+
     // explodes string by separator and puts data in resolver for use in binder 
     // $bind is array with field names, which will binded to data one by one
     public function resolveAndBind(string $fieldName, array $bind, string|bool $collectionName = false) {
