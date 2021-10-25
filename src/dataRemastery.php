@@ -119,6 +119,18 @@ class dataRemastery {
         return $this;
     }
 
+    // resolve from binded filed or existing collection
+    public function resolveIn(string $fieldName, string|bool $savedCollectionName = false, $newCollectionName = false) {
+        if($savedCollectionName) {
+            $string = $this->resolver[$savedCollectionName][$fieldName];
+        } else {
+            $string = $this->{$fieldName};
+        }
+        $newCollectionName = $this->checkCollection($newCollectionName);
+        $this->setCollection($newCollectionName, explode($this->separator, $string));
+        return $this;
+    }
+
     public function buildFromString($string, $fieldName) {
         $collectionName = $this->checkCollection(false);
         $this->setCollection($collectionName, explode($this::$defaultSeparator, $string));
