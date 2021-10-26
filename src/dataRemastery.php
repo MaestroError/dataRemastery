@@ -50,23 +50,31 @@ class dataRemastery {
         return $this;
     }
 
-    public function bind(string $propertyName, string $dataFieldName) {
-        $this->binder[$propertyName] = $this->rawData[$dataFieldName];
+    public function bind(string $propertyName, string $dataFieldName, $callback = null) {
+        if(isset($this->rawData[$dataFieldName])) {
+            $value = $this->rawData[$dataFieldName];
+            if($callback) {
+                $value = $callback($value);
+            }
+            $this->binder[$propertyName] = $value;
+        }
         $this->set($this->binder);
         return $this;
     }
 
     // binds last or specified resolved value
     // $dataFieldName key or index
-    public function bindR(string $propertyName, string|int $dataFieldName, string|bool $collectionName = false, $defaultValue = null) {
+    public function bindR(string $propertyName, string|int $dataFieldName, string|bool $collectionName = false, $defaultValue = null, $callback = null) {
         $collectionName = $this->checkCollection($collectionName);
 
         if(isset($this->resolver[$collectionName][$dataFieldName])) {
-            $this->binder[$propertyName] = $this->resolver[$collectionName][$dataFieldName];
-        } else {
-            if($defaultValue) {
-                $this->binder[$propertyName] = $defaultValue;
+            $value = $this->resolver[$collectionName][$dataFieldName];
+            if($callback) {
+                $value = $callback($value);
             }
+            $this->binder[$propertyName] = $value;
+        } else {
+            $this->binder[$propertyName] = $defaultValue;
         }
         
         $this->set($this->binder);
@@ -89,6 +97,7 @@ class dataRemastery {
 
     // explodes string by separator and puts data in resolver for use in binder 
     // $bind is array with field names, which will binded to data one by one
+    // ex: 12, 41, 23, 65 (value of $fieldName's field), separated by "," and binded one by one to: ["main_category" (12), "id" (41), "price" (23), "weight" (65)] ($bind)
     public function resolveAndBind(string $fieldName, array $bind, string|bool $collectionName = false) {
         $string = $this->rawData[$fieldName];
         $this->setCollection($collectionName, explode($this->separator, $string));
@@ -120,18 +129,23 @@ class dataRemastery {
     }
 
     // resolve from binded filed or existing collection
-    public function resolveIn(string $fieldName, string|bool $savedCollectionName = false, $newCollectionName = false) {
-        if($savedCollectionName) {
+    public function resolveIn(string $fieldName, string|bool $savedCollectionName = false, $newCollectionName = false, $default = NULL) {
+        if($savedCollectionName && isset($this->resolver[$savedCollectionName][$fieldName])) {
             $string = $this->resolver[$savedCollectionName][$fieldName];
         } else {
-            $string = $this->{$fieldName};
+            if(isset($this->{$fieldName})) {
+                $string = $this->{$fieldName};
+            } else {
+                $string = $default;
+            }
         }
         $newCollectionName = $this->checkCollection($newCollectionName);
         $this->setCollection($newCollectionName, explode($this->separator, $string));
         return $this;
     }
 
-    public function buildFromString($string, $fieldName) {
+
+    protected function buildFromString($string, $fieldName) {
         $collectionName = $this->checkCollection(false);
         $this->setCollection($collectionName, explode($this::$defaultSeparator, $string));
         $resolved = $this->resolver[$collectionName];
