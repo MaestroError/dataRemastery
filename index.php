@@ -20,7 +20,7 @@ foreach ($exData as $onePost) {
 
     /* xfields is string type data like this: 
     |title|Game of Thrones||language|English||author|George R. R. Martin| 
-    so it needs first leve separation by || and second by |*/
+    so it needs first level separation by || and second by |*/
 
     // set separator (first level), set separatorX (second level) and resolveX (2 level resolve) to resolve field "xfields" and set data in collection "xCollection"
     ->separator("||")->separatorX("|")->resolveX("xfields", "xCollection")
